@@ -1,36 +1,35 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize =
-new Sequelize(
+const sequelize = new Sequelize(
 
 process.env.DB_NAME,
-
 process.env.DB_USER,
-
 process.env.DB_PASSWORD,
 
 {
+host: process.env.DB_HOST,
+port: process.env.DB_PORT,
+dialect: "mysql",
+logging: false,
 
-host:process.env.DB_HOST,
-
-dialect:"mysql",
-
-logging:false
+dialectOptions: {
+ssl: {
+require: true,
+rejectUnauthorized: false
+}
+}
 
 }
 
 );
 
-const connectDB=
-async()=>{
+const connectDB = async () => {
 
-try{
+try {
 
 await sequelize.authenticate();
 
-console.log(
-"MySQL Connected"
-);
+console.log("Database Connected");
 
 }
 catch(error){
@@ -40,15 +39,11 @@ console.log(
 error.message
 );
 
-process.exit();
-
 }
 
 };
 
-module.exports={
-
-connectDB,
-sequelize
-
+module.exports = {
+sequelize,
+connectDB
 };
