@@ -20,7 +20,7 @@ const checkout=async()=>{
 try{
 
 await API.post(
-"/orders/create",
+"/api/orders/create",
 {
 items:cart,
 totalAmount:total

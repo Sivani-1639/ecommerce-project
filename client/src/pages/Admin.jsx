@@ -35,7 +35,7 @@ try{
 
 const res=
 await API.get(
-"/products/all"
+"/api/products/all"
 );
 
 setProducts(

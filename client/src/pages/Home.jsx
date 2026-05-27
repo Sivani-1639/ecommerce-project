@@ -1,4 +1,4 @@
-import {useEffect,useState}
+import { useEffect, useState }
 from "react";
 
 import API
@@ -14,25 +14,25 @@ FaShieldAlt
 }
 from "react-icons/fa";
 
-function Home(){
+function Home() {
 
-const [products,setProducts]=
+const [products, setProducts] =
 useState([]);
 
-useEffect(()=>{
+useEffect(() => {
 
 fetchProducts();
 
-},[]);
+}, []);
 
-const fetchProducts=
-async()=>{
+const fetchProducts =
+async () => {
 
-try{
+try {
 
-const res=
+const res =
 await API.get(
-"/products/all"
+"/api/products/all"
 );
 
 setProducts(
@@ -41,7 +41,7 @@ res.data
 
 }
 
-catch(error){
+catch (error) {
 
 console.log(error);
 
@@ -49,7 +49,7 @@ console.log(error);
 
 };
 
-return(
+return (
 
 <div className="bg-gray-100 min-h-screen">
 
@@ -146,7 +146,7 @@ className="grid md:grid-cols-3 gap-8"
 {
 
 products.map(
-(product)=>
+(product) =>
 
 <ProductCard
 key={product.id}
