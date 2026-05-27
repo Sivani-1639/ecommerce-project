@@ -43,7 +43,10 @@ res.data
 
 catch (error) {
 
-console.log(error);
+console.log(
+"Product Fetch Error:",
+error
+);
 
 }
 
@@ -146,12 +149,14 @@ className="grid md:grid-cols-3 gap-8"
 {
 
 products.map(
-(product) =>
+(product) => (
 
 <ProductCard
 key={product.id}
 product={product}
 />
+
+)
 
 )
 
