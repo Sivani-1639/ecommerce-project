@@ -1,125 +1,89 @@
-import {useContext}
-from "react";
+import { useEffect, useState } from "react";
 
-import {CartContext}
-from "../context/CartContext";
+const Cart = () => {
+  const [cartItems, setCartItems] = useState([]);
 
-function Cart(){
+  useEffect(() => {
+    const savedCart =
+      JSON.parse(localStorage.getItem("cart")) || [];
 
-const {cart}=
-useContext(
-CartContext
-);
+    setCartItems(savedCart);
+  }, []);
 
-const total=
-cart.reduce(
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price,
+    0
+  );
 
-(sum,item)=>
+  return (
+    <div
+      style={{
+        padding: "30px",
+        minHeight: "100vh",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "40px",
+          marginBottom: "30px",
+        }}
+      >
+        Shopping Cart
+      </h1>
 
-sum+
-(item.price*item.quantity)
+      {cartItems.length === 0 ? (
+        <h2>No Products In Cart</h2>
+      ) : (
+        <>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns:
+                "repeat(auto-fit,minmax(280px,1fr))",
+              gap: "20px",
+            }}
+          >
+            {cartItems.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  border: "1px solid #ddd",
+                  borderRadius: "15px",
+                  overflow: "hidden",
+                }}
+              >
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  style={{
+                    width: "100%",
+                    height: "220px",
+                    objectFit: "cover",
+                  }}
+                />
 
-,0
+                <div style={{ padding: "15px" }}>
+                  <h2>{item.name}</h2>
 
-);
+                  <p>{item.description}</p>
 
-return(
+                  <h3>₹ {item.price}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
 
-<div className="bg-gray-100 min-h-screen p-10">
-
-<h1 className="text-5xl font-bold mb-8">
-
-Shopping Cart
-
-</h1>
-
-{
-
-cart.length===0
-
-?
-
-<div className="bg-white p-10 rounded-xl text-center shadow">
-
-<h2 className="text-2xl">
-
-Your cart is empty
-
-</h2>
-
-</div>
-
-:
-
-<>
-
-{
-
-cart.map(item=>(
-
-<div
-
-key={item.id}
-
-className="bg-white p-6 rounded-xl shadow mb-5 flex justify-between"
-
->
-
-<div>
-
-<h2 className="text-2xl font-bold">
-
-{item.name}
-
-</h2>
-
-<p>
-
-Quantity:
-{item.quantity}
-
-</p>
-
-<p>
-
-₹{item.price}
-
-</p>
-
-</div>
-
-</div>
-
-))
-
-}
-
-<div className="bg-white p-6 rounded-xl shadow mt-10">
-
-<h2 className="text-3xl font-bold">
-
-Total ₹{total}
-
-</h2>
-
-<button
-className="mt-5 bg-gradient-to-r from-purple-600 to-pink-500 text-white px-10 py-3 rounded-full"
->
-
-Proceed Checkout
-
-</button>
-
-</div>
-
-</>
-
-}
-
-</div>
-
-)
-
-}
+          <h1
+            style={{
+              marginTop: "40px",
+            }}
+          >
+            Total: ₹ {totalPrice}
+          </h1>
+        </>
+      )}
+    </div>
+  );
+};
 
 export default Cart;

@@ -1,35 +1,37 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = import.meta.env.VITE_API_URL;
-
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
 
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://ecommerce-project-c08i.onrender.com";
+
   useEffect(() => {
     fetchProducts();
-
-    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    console.log(savedCart);
   }, []);
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`${API}/api/products`);
+      const res = await axios.get(`${API_URL}/api/products`);
       setProducts(res.data);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  // ADD TO CART
   const addToCart = (product) => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingCart =
+      JSON.parse(localStorage.getItem("cart")) || [];
 
-    cart.push(product);
+    existingCart.push(product);
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(existingCart)
+    );
 
     alert("Product Added To Cart");
   };
@@ -37,25 +39,30 @@ const Home = () => {
   return (
     <div
       style={{
-        background: darkMode ? "#111" : "#fff",
+        backgroundColor: darkMode ? "#111" : "#f5f5f5",
         color: darkMode ? "#fff" : "#000",
         minHeight: "100vh",
       }}
     >
       {/* NAVBAR */}
+
       <nav
         style={{
           display: "flex",
           justifyContent: "space-between",
-          padding: "20px 30px",
           alignItems: "center",
-          background: darkMode ? "#1a1a1a" : "#fff",
+          padding: "20px 30px",
+          background: darkMode ? "#222" : "#fff",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
         }}
       >
         <h1
           style={{
-            color: "#a020f0",
-            fontSize: "45px",
+            fontSize: "50px",
+            color: "#b026ff",
             fontWeight: "bold",
           }}
         >
@@ -67,13 +74,37 @@ const Home = () => {
             display: "flex",
             gap: "25px",
             alignItems: "center",
-            fontSize: "20px",
-            color: darkMode ? "#fff" : "#000",
+            fontSize: "30px",
           }}
         >
-          <span>Home</span>
-          <span>🛒</span>
-          <span>👤</span>
+          <a
+            href="/"
+            style={{
+              textDecoration: "none",
+              color: darkMode ? "#fff" : "#000",
+              fontSize: "22px",
+            }}
+          >
+            Home
+          </a>
+
+          <a
+            href="/cart"
+            style={{
+              textDecoration: "none",
+              color: darkMode ? "#fff" : "#000",
+            }}
+          >
+            🛒
+          </a>
+
+          <span
+            style={{
+              color: darkMode ? "#fff" : "#000",
+            }}
+          >
+            👤
+          </span>
 
           <button
             onClick={() => setDarkMode(!darkMode)}
@@ -81,86 +112,111 @@ const Home = () => {
               border: "none",
               background: "transparent",
               cursor: "pointer",
-              fontSize: "22px",
+              fontSize: "28px",
               color: darkMode ? "#fff" : "#000",
             }}
           >
-            {darkMode ? "☀" : "🌙"}
+            {darkMode ? "☀️" : "🌙"}
           </button>
         </div>
       </nav>
 
-      {/* HERO */}
-      <section
+      {/* HERO SECTION */}
+
+      <div
         style={{
-          background: "linear-gradient(to right, purple, red)",
-          color: "white",
           padding: "60px 30px",
+          background:
+            "linear-gradient(to right, #7b2ff7, #f107a3)",
+          color: "white",
         }}
       >
-        <h2 style={{ fontSize: "28px" }}>
-          Shop premium products with a futuristic dashboard.
-        </h2>
+        <h1
+          style={{
+            fontSize: "60px",
+            marginBottom: "20px",
+          }}
+        >
+          Premium Shopping Experience
+        </h1>
+
+        <p
+          style={{
+            fontSize: "24px",
+            marginBottom: "30px",
+          }}
+        >
+          Shop premium products with futuristic UI.
+        </p>
 
         <button
           style={{
-            marginTop: "30px",
-            padding: "15px 30px",
-            borderRadius: "12px",
+            padding: "15px 40px",
+            borderRadius: "50px",
             border: "none",
-            background: "white",
-            color: "purple",
-            fontWeight: "bold",
+            fontSize: "20px",
             cursor: "pointer",
+            fontWeight: "bold",
           }}
         >
           Shop Now
         </button>
-      </section>
+      </div>
 
       {/* FEATURES */}
-      <section
+
+      <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(250px,1fr))",
           gap: "20px",
-          padding: "30px",
+          padding: "40px 30px",
         }}
       >
-        <div
-          style={{
-            background: darkMode ? "#222" : "#f5f5f5",
-            padding: "40px",
-            borderRadius: "20px",
-          }}
-        >
-          <h2>🚚 Fast Delivery</h2>
-        </div>
+        {[
+          {
+            title: "Fast Delivery",
+            icon: "🚚",
+          },
+          {
+            title: "Best Deals",
+            icon: "🏷️",
+          },
+          {
+            title: "Secure Payments",
+            icon: "🛡️",
+          },
+        ].map((item, index) => (
+          <div
+            key={index}
+            style={{
+              background: darkMode ? "#222" : "#fff",
+              padding: "40px",
+              borderRadius: "20px",
+              boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h1>{item.icon}</h1>
 
-        <div
-          style={{
-            background: darkMode ? "#222" : "#f5f5f5",
-            padding: "40px",
-            borderRadius: "20px",
-          }}
-        >
-          <h2>🏷 Best Deals</h2>
-        </div>
-
-        <div
-          style={{
-            background: darkMode ? "#222" : "#f5f5f5",
-            padding: "40px",
-            borderRadius: "20px",
-          }}
-        >
-          <h2>🛡 Secure Payments</h2>
-        </div>
-      </section>
+            <h2>{item.title}</h2>
+          </div>
+        ))}
+      </div>
 
       {/* PRODUCTS */}
-      <section style={{ padding: "30px" }}>
-        <h1 style={{ marginBottom: "20px", fontSize: "45px" }}>
+
+      <div
+        style={{
+          padding: "20px 30px",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "50px",
+            marginBottom: "30px",
+          }}
+        >
           Trending Products
         </h1>
 
@@ -176,12 +232,11 @@ const Home = () => {
             <div
               key={product.id}
               style={{
-                border: darkMode
-                  ? "1px solid #333"
-                  : "1px solid #ddd",
-                borderRadius: "15px",
+                background: darkMode ? "#222" : "#fff",
+                borderRadius: "20px",
                 overflow: "hidden",
-                background: darkMode ? "#1e1e1e" : "#fff",
+                boxShadow:
+                  "0 2px 10px rgba(0,0,0,0.1)",
               }}
             >
               <img
@@ -194,25 +249,25 @@ const Home = () => {
                 }}
               />
 
-              <div style={{ padding: "15px" }}>
+              <div style={{ padding: "20px" }}>
                 <h2>{product.name}</h2>
 
                 <p>{product.description}</p>
 
-                <h3>₹ {product.price}</h3>
+                <h2>₹ {product.price}</h2>
 
                 <button
                   onClick={() => addToCart(product)}
                   style={{
                     width: "100%",
                     padding: "12px",
-                    background: "purple",
-                    color: "white",
                     border: "none",
                     borderRadius: "10px",
+                    background: "#b026ff",
+                    color: "white",
+                    fontSize: "18px",
                     cursor: "pointer",
-                    marginTop: "10px",
-                    fontWeight: "bold",
+                    marginTop: "15px",
                   }}
                 >
                   Add To Cart
@@ -221,7 +276,7 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 };
