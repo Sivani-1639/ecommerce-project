@@ -25,7 +25,7 @@ const fetchProducts = async () => {
 try {
 
 const res =
-await API.get("/api/products");
+await API.get("/products");
 
 console.log("Products:", res.data);
 
