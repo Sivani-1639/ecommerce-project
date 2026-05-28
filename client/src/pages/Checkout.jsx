@@ -1,90 +1,84 @@
-import {useContext}
-from "react";
+import { useNavigate } from "react-router-dom";
 
-import {CartContext}
-from "../context/CartContext";
+function Checkout() {
+  const navigate = useNavigate();
 
-import API
-from "../services/api";
+  const handlePayment = () => {
+    alert("Payment Successful ✅");
 
-function Checkout(){
+    localStorage.removeItem("cart");
 
-const {cart}=
-useContext(
-CartContext
-);
+    navigate("/");
 
-const user=
-JSON.parse(
-localStorage.getItem("user")
-);
+    window.location.reload();
+  };
 
-const total=
-cart.reduce(
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#f5f5f5",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          background: "white",
+          padding: "40px",
+          borderRadius: "15px",
+          width: "400px",
+          textAlign: "center",
+          boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+        }}
+      >
+        <h1
+          style={{
+            marginBottom: "20px",
+          }}
+        >
+          Checkout
+        </h1>
 
-(sum,item)=>
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/5/5e/UPI-Logo-vector.svg"
+          alt="payment"
+          style={{
+            width: "150px",
+            marginBottom: "20px",
+          }}
+        />
 
-sum+
-(item.price*item.quantity),
+        <h3>Demo Payment Gateway</h3>
 
-0
+        <p
+          style={{
+            marginTop: "10px",
+            marginBottom: "20px",
+          }}
+        >
+          Click below to complete payment.
+        </p>
 
-);
-
-const placeOrder=
-async()=>{
-
-await API.post(
-
-"/orders/place",
-
-{
-
-userId:user.id,
-
-products:cart,
-
-totalPrice:total
-
-}
-
-);
-
-alert(
-"Order Placed Successfully"
-);
-
-};
-
-return(
-
-<div>
-
-<h1>
-Checkout
-</h1>
-
-<h2>
-
-Total:
-₹{total}
-
-</h2>
-
-<button
-onClick={
-placeOrder
-}
->
-
-Place Order
-
-</button>
-
-</div>
-
-)
-
+        <button
+          onClick={handlePayment}
+          style={{
+            width: "100%",
+            padding: "15px",
+            background: "green",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontSize: "18px",
+          }}
+        >
+          Proceed To Pay
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default Checkout;

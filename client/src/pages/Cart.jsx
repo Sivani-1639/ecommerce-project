@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Cart = () => {
+function Cart() {
   const [cartItems, setCartItems] = useState([]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const savedCart =
+    const items =
       JSON.parse(localStorage.getItem("cart")) || [];
 
-    setCartItems(savedCart);
+    setCartItems(items);
   }, []);
 
   const totalPrice = cartItems.reduce(
@@ -20,11 +23,12 @@ const Cart = () => {
       style={{
         padding: "30px",
         minHeight: "100vh",
+        background: "#f5f5f5",
       }}
     >
       <h1
         style={{
-          fontSize: "40px",
+          fontSize: "45px",
           marginBottom: "30px",
         }}
       >
@@ -50,6 +54,7 @@ const Cart = () => {
                   border: "1px solid #ddd",
                   borderRadius: "15px",
                   overflow: "hidden",
+                  background: "white",
                 }}
               >
                 <img
@@ -80,10 +85,26 @@ const Cart = () => {
           >
             Total: ₹ {totalPrice}
           </h1>
+
+          <button
+            onClick={() => navigate("/checkout")}
+            style={{
+              padding: "15px 25px",
+              background: "green",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              marginTop: "20px",
+              fontSize: "18px",
+            }}
+          >
+            Proceed To Pay
+          </button>
         </>
       )}
     </div>
   );
-};
+}
 
 export default Cart;
