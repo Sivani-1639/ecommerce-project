@@ -1,23 +1,18 @@
-import { useEffect, useState }
-from "react";
+import { useEffect, useState } from "react";
 
-import API
-from "../services/api";
+import API from "../services/api";
 
-import ProductCard
-from "../components/ProductCard";
+import ProductCard from "../components/ProductCard";
 
 import {
 FaShippingFast,
 FaTags,
 FaShieldAlt
-}
-from "react-icons/fa";
+} from "react-icons/fa";
 
 function Home() {
 
-const [products, setProducts] =
-useState([]);
+const [products, setProducts] = useState([]);
 
 useEffect(() => {
 
@@ -25,26 +20,23 @@ fetchProducts();
 
 }, []);
 
-const fetchProducts =
-async () => {
+const fetchProducts = async () => {
 
 try {
 
 const res =
-await API.get(
-"/api/products/all"
-);
+await API.get("/api/products");
 
-setProducts(
-res.data
-);
+console.log("Products:", res.data);
+
+setProducts(res.data);
 
 }
 
 catch (error) {
 
 console.log(
-"Product Fetch Error:",
+"Fetch Error:",
 error
 );
 
@@ -62,7 +54,7 @@ className="bg-gradient-to-r from-purple-700 via-pink-500 to-red-500 text-white p
 
 <div className="max-w-7xl mx-auto px-6">
 
-<h1 className="text-6xl font-extrabold animate-pulse">
+<h1 className="text-6xl font-extrabold">
 
 Future Shopping Experience
 
@@ -92,9 +84,7 @@ className="grid md:grid-cols-3 gap-6 px-10 -mt-10"
 
 <div className="bg-white p-8 rounded-2xl shadow">
 
-<FaShippingFast
-size={40}
-/>
+<FaShippingFast size={40} />
 
 <h2 className="font-bold mt-4">
 
@@ -106,9 +96,7 @@ Fast Delivery
 
 <div className="bg-white p-8 rounded-2xl shadow">
 
-<FaTags
-size={40}
-/>
+<FaTags size={40} />
 
 <h2 className="font-bold mt-4">
 
@@ -120,9 +108,7 @@ Best Deals
 
 <div className="bg-white p-8 rounded-2xl shadow">
 
-<FaShieldAlt
-size={40}
-/>
+<FaShieldAlt size={40} />
 
 <h2 className="font-bold mt-4">
 
@@ -143,23 +129,26 @@ Trending Products
 </h2>
 
 <div
-className="grid md:grid-cols-3 gap-8"
+className="grid grid-cols-1 md:grid-cols-3 gap-8"
 >
 
 {
+products.length > 0 ? (
 
-products.map(
-(product) => (
+products.map((product) => (
 
 <ProductCard
 key={product.id}
 product={product}
 />
 
-)
+))
+
+) : (
+
+<h1>No Products Found</h1>
 
 )
-
 }
 
 </div>
@@ -168,7 +157,7 @@ product={product}
 
 </div>
 
-)
+);
 
 }
 

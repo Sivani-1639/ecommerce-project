@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
+
+baseURL:
+"https://ecommerce-project-1-g5vy.onrender.com"
+
 });
 
 export default API;
