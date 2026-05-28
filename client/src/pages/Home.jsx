@@ -1,164 +1,67 @@
 import { useEffect, useState } from "react";
-
 import API from "../services/api";
 
-import ProductCard from "../components/ProductCard";
-
-import {
-FaShippingFast,
-FaTags,
-FaShieldAlt
-} from "react-icons/fa";
-
 function Home() {
-
-const [products, setProducts] = useState([]);
-
-useEffect(() => {
-
-fetchProducts();
-
-}, []);
-
-const fetchProducts = async () => {
-
-try {
-
-const res =
-await API.get("/products");
-
-console.log("Products:", res.data);
-
-setProducts(res.data);
-
-}
-
-catch (error) {
-
-console.log(
-"Fetch Error:",
-error
-);
-
-}
-
-};
-
-return (
-
-<div className="bg-gray-100 min-h-screen">
-
-<div
-className="bg-gradient-to-r from-purple-700 via-pink-500 to-red-500 text-white py-24"
->
-
-<div className="max-w-7xl mx-auto px-6">
-
-<h1 className="text-6xl font-extrabold">
-
-Future Shopping Experience
-
-</h1>
-
-<p className="text-xl mt-5 w-1/2">
-
-Shop premium products with a futuristic dashboard.
-
-</p>
-
-<button
-className="mt-8 bg-white text-purple-700 px-8 py-4 rounded-full font-bold hover:scale-110 transition"
->
-
-Shop Now
-
-</button>
-
-</div>
-
-</div>
-
-<div
-className="grid md:grid-cols-3 gap-6 px-10 -mt-10"
->
-
-<div className="bg-white p-8 rounded-2xl shadow">
-
-<FaShippingFast size={40} />
-
-<h2 className="font-bold mt-4">
-
-Fast Delivery
-
-</h2>
-
-</div>
-
-<div className="bg-white p-8 rounded-2xl shadow">
-
-<FaTags size={40} />
-
-<h2 className="font-bold mt-4">
-
-Best Deals
-
-</h2>
-
-</div>
-
-<div className="bg-white p-8 rounded-2xl shadow">
-
-<FaShieldAlt size={40} />
-
-<h2 className="font-bold mt-4">
-
-Secure Payments
-
-</h2>
-
-</div>
-
-</div>
-
-<div className="max-w-7xl mx-auto px-8 py-12">
-
-<h2 className="text-4xl font-bold mb-10">
-
-Trending Products
-
-</h2>
-
-<div
-className="grid grid-cols-1 md:grid-cols-3 gap-8"
->
-
-{
-products.length > 0 ? (
-
-products.map((product) => (
-
-<ProductCard
-key={product.id}
-product={product}
-/>
-
-))
-
-) : (
-
-<h1>No Products Found</h1>
-
-)
-}
-
-</div>
-
-</div>
-
-</div>
-
-);
-
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await API.get("/products");
+        console.log(res.data);
+        setProducts(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Trending Products</h1>
+
+      {products.length === 0 ? (
+        <p>No Products Found</p>
+      ) : (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4,1fr)",
+            gap: "20px",
+          }}
+        >
+          {products.map((product) => (
+            <div
+              key={product.id}
+              style={{
+                border: "1px solid #ccc",
+                padding: "10px",
+                borderRadius: "10px",
+              }}
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  objectFit: "cover",
+                }}
+              />
+
+              <h3>{product.name}</h3>
+
+              <p>{product.description}</p>
+
+              <h2>₹ {product.price}</h2>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Home;
