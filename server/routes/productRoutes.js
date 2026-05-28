@@ -1,88 +1,27 @@
-const express=require("express");
+const express = require("express");
 
-const router=
-express.Router();
+const router = express.Router();
 
-const Product=
-require("../models/Product");
+const Product = require("../models/Product");
 
-router.post(
-"/add",
-async(req,res)=>{
+router.get("/", async (req, res) => {
 
-try{
+  try {
 
-console.log(
-"Incoming Product:",
-req.body
-);
+    const products = await Product.findAll();
 
-const product=
-await Product.create({
+    res.json(products);
 
-name:req.body.name,
+  } catch (error) {
 
-description:req.body.description,
+    console.log(error);
 
-price:req.body.price,
+    res.status(500).json({
+      message: "Server Error"
+    });
 
-image:req.body.image,
-
-stock:req.body.stock
+  }
 
 });
 
-res.status(201).json({
-
-message:"Product Added",
-
-product
-
-});
-
-}
-
-catch(error){
-
-console.log(
-"PRODUCT ERROR:",
-error
-);
-
-res.status(500).json({
-
-message:error.message
-
-});
-
-}
-
-});
-
-router.get(
-"/all",
-async(req,res)=>{
-
-try{
-
-const products=
-await Product.findAll();
-
-res.json(
-products
-);
-
-}
-catch(error){
-
-res.status(500).json({
-
-message:error.message
-
-});
-
-}
-
-});
-
-module.exports=router;
+module.exports = router;
