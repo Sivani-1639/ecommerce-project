@@ -12,8 +12,9 @@ const Product = sequelize.define(
     stock: DataTypes.INTEGER,
   },
   {
+    tableName: "products",
     freezeTableName: true,
-    timestamps: true,
+    timestamps: false,
   }
 );
 
